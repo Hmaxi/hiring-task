@@ -4,6 +4,7 @@ import {checkUsername} from './validation'
 
 function Login() {
     const [username, setUsername] = useState('')
+    const [isClicked, setIsClicked] = useState(false)
     const [checkedResponse, setCheckedResponse] = useState({})
 
     useEffect(() => {
@@ -19,20 +20,22 @@ function Login() {
             validate()
                 .catch(console.error)
         }
-    }, [username])
+        // TODO: eslint warning: React Hook useEffect has a missing dependency: 'username'. But then it will not work.
+    }, [isClicked])
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        setUsername(e.target.querySelector('input[type="text"]').value)
+    function handleOnClick() {
+        setIsClicked(!isClicked)
+    }
+
+    function handleOnChange({target}) {
+        setUsername(target.value)
     }
 
     const inputForm = (
         <div>
-            <form action="#" onSubmit={handleSubmit}>
-                <label>username: </label>
-                <Input type='text' name='username'></Input>
-                <Button type='submit' variant='contained'>Login</Button>
-            </form>
+            <label>username: </label>
+            <Input type='text' name='username' onChange={handleOnChange}></Input>
+            <Button type='button' variant='contained' onClick={handleOnClick}>Login</Button>
         </div>
     )
 
